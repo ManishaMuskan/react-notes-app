@@ -1,38 +1,97 @@
+* {
+	box-sizing: border-box;
+}
+
 .App {
-  text-align: center;
+	margin: 1rem;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App .notes-container {
+	display: flex;
+	justify-content: space-between;
+	background: #666;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App .notes-container .notes-sidebar,
+.App .notes-container .notes-main {
+	height: calc(100vh - 2rem);
+	border: 1px solid #000;
+	padding: 1rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.App .notes-container .notes-sidebar {
+	width: 30%;
+	overflow: auto;
 }
 
-.App-link {
-  color: #61dafb;
+.App .notes-container .notes-main {
+	width: 70%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Notes Editor */
+
+.note-editor-body {
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 10rem);
+}
+
+.note-editor-body input {
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+}
+
+.note-editor-body textarea {
+	resize: none;
+	height: 100%;
+	width: 100%;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+.note-editor-body .character-limit {
+	font-size: 0.8rem;
+	color: #222;
+	margin-bottom: 1rem;
+}
+
+.add-note {
+	padding: 0.3rem;
+	border: 1px solid;
+	border-radius: 3px;
+}
+
+/* Notes Preview */
+.notes-details-preview {
+	padding: 0.5rem;
+	background: beige;
+	margin: 0 auto 0.8rem;
+}
+
+.notes-details-preview .notes-header {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.notes-details-preview .notes-header .delete-notes {
+	fill: grey;
+}
+
+.notes-details-preview .notes-content h5 {
+	margin: 0;
+}
+
+.notes-details-preview .notes-content p {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 0.8rem;
+}
+
+.notes-details-preview .notes-footer {
+	font-size: 0.8rem;
+	color: grey;
+	text-align: right;
+	display: block;
 }

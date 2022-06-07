@@ -1,28 +1,24 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
-import { useNotesList } from "../../contexts/NotesListContext";
 
-const NoteEditor = () => {
+// getting fn to add note to notesList from parent component as props
+const NoteEditor = ({ handleAddNote }) => {
 	const [note, setNote] = useState({
 		id: uuid(),
 		title: "",
 		body: "",
 	});
 
-	const updateNote = (e) =>
-		setNote({ ...note, [e.target.name]: e.target.value });
+	const handleNoteChange = (e) => {
+		setNote((prevNote) => {
+			return { ...prevNote, [e.target.name]: e.target.value };
+		});
+	};
 
-	const { notes, notesContextChange } = useNotesList();
-
+	// passing note from child to parent and adding it using callback fn i.e. coming as prop
 	const addNote = () => {
-		if (note.title || note.body) {
-			notesContextChange([...notes, note]);
-			setNote({
-				id: uuid(),
-				title: "",
-				body: "",
-			});
-		}
+		handleAddNote(note);
+		setNote({ id: uuid(), title: "", body: "" });
 	};
 
 	return (
@@ -32,14 +28,14 @@ const NoteEditor = () => {
 					type='text'
 					name='title'
 					placeholder='title...'
+					onChange={handleNoteChange}
 					value={note.title}
-					onChange={updateNote}
 				/>
 				<textarea
 					name='body'
 					placeholder='add your notes here'
+					onChange={handleNoteChange}
 					value={note.body}
-					onChange={updateNote}
 				/>
 				<span className='character-limit'>1000 words remaining</span>
 			</div>
@@ -48,6 +44,6 @@ const NoteEditor = () => {
 			</button>
 		</div>
 	);
-};
+};;
 
 export default NoteEditor;

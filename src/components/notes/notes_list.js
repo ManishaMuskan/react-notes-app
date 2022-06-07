@@ -1,8 +1,6 @@
 import NotePreview from "./note_preview";
-import { useNotesList } from "../../contexts/NotesListContext";
 
-const NotesList = () => {
-	const { notes } = useNotesList();
+const NotesList = ({ notes }) => {
 	const notesList = notes.map((note) => {
 		return (
 			<NotePreview noteTitle={note.title} noteBody={note.body} key={note.id} />

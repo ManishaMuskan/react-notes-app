@@ -12,11 +12,11 @@ const NoteEditor = () => {
 	const updateNote = (e) =>
 		setNote({ ...note, [e.target.name]: e.target.value });
 
-	const { notes, notesContextChange } = useNotesList();
+	const { notes, setNotes } = useNotesList();
 
 	const addNote = () => {
 		if (note.title || note.body) {
-			notesContextChange([...notes, note]);
+			setNotes([...notes, note]);
 			setNote({
 				id: uuid(),
 				title: "",

@@ -3,6 +3,7 @@ import { useNotesList } from "../../contexts/NotesListContext";
 
 const NotesList = () => {
 	const { notes } = useNotesList();
+	console.log(notes);
 	const notesList = notes.map((note) => {
 		return (
 			<NotePreview noteTitle={note.title} noteBody={note.body} key={note.id} />

@@ -3,11 +3,14 @@ import { v4 as uuid } from "uuid";
 
 // getting fn to add note to notesList from parent component as props
 const NoteEditor = ({ handleAddNote }) => {
-	const [note, setNote] = useState({
+	const blankNote = {
 		id: uuid(),
 		title: "",
 		body: "",
-	});
+		createdDate: "",
+		lastModified: "",
+	};
+	const [note, setNote] = useState(blankNote);
 
 	const handleNoteChange = (e) => {
 		setNote((prevNote) => {
@@ -18,7 +21,7 @@ const NoteEditor = ({ handleAddNote }) => {
 	// passing note from child to parent and adding it using callback fn i.e. coming as prop
 	const addNote = () => {
 		handleAddNote(note);
-		setNote({ id: uuid(), title: "", body: "" });
+		setNote(blankNote);
 	};
 
 	return (

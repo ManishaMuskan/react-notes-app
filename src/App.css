@@ -69,6 +69,10 @@
 	margin: 0 auto 0.8rem;
 }
 
+.notes-details-preview.active {
+  background: yellowgreen;
+}
+
 .notes-details-preview .notes-header {
 	display: flex;
 	flex-direction: row-reverse;
@@ -80,6 +84,7 @@
 
 .notes-details-preview .notes-content h5 {
 	margin: 0;
+  text-transform: capitalize;
 }
 
 .notes-details-preview .notes-content p {

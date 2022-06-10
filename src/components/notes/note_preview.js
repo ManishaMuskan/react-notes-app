@@ -1,14 +1,14 @@
 import React from "react";
 import { FaTrash } from "react-icons/fa";
 
-const NotePreview = ({ note, classActive, handleDeleteNote }) => {
+const NotePreview = ({ note, activeNote, handleDeleteNote, activateNote }) => {
 	return (
 		// if previewmode="detail-preview", show detail-preview
 		<div
-			className={`notes-details-preview ${classActive}`}
-			onClick={() => {
-				console.log("selected");
-			}}
+			className={`notes-details-preview ${
+				activeNote.id === note.id ? `active` : ``
+			}`}
+			onClick={() => activateNote(note)}
 		>
 			<div className='notes-header'>
 				<FaTrash

@@ -1,27 +1,24 @@
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
-
 // getting fn to add note to notesList from parent component as props
-const NoteEditor = ({ handleAddNote }) => {
-	const blankNote = {
-		id: uuid(),
-		title: "",
-		body: "",
-		createdDate: "",
-		lastModified: "",
-	};
-	const [note, setNote] = useState(blankNote);
-
+const NoteEditor = ({
+	handleActiveNoteChange,
+	handleAddNote,
+	handleUpdateNote,
+	activeNote,
+}) => {
 	const handleNoteChange = (e) => {
-		setNote((prevNote) => {
-			return { ...prevNote, [e.target.name]: e.target.value };
-		});
+		handleActiveNoteChange(e);
 	};
 
 	// passing note from child to parent and adding it using callback fn i.e. coming as prop
-	const addNote = () => {
-		handleAddNote(note);
-		setNote(blankNote);
+	const addOrUpdateNote = () => {
+		let noteToBeAdded;
+		if (!activeNote.createdDate) {
+			noteToBeAdded = { ...activeNote, createdDate: Date.now() };
+			handleAddNote(noteToBeAdded);
+		} else {
+			noteToBeAdded = { ...activeNote, lastModified: Date.now() };
+			handleUpdateNote(noteToBeAdded);
+		}
 	};
 
 	return (
@@ -32,21 +29,21 @@ const NoteEditor = ({ handleAddNote }) => {
 					name='title'
 					placeholder='title...'
 					onChange={handleNoteChange}
-					value={note.title}
+					value={activeNote.title}
 				/>
 				<textarea
 					name='body'
 					placeholder='add your notes here'
 					onChange={handleNoteChange}
-					value={note.body}
+					value={activeNote.body}
 				/>
 				<span className='character-limit'>1000 words remaining</span>
 			</div>
-			<button className='add-note' onClick={addNote}>
-				Add Note
+			<button className='add-note' onClick={addOrUpdateNote}>
+				{!activeNote.createdDate ? "Add Note" : "Update Note"}
 			</button>
 		</div>
 	);
-};;
+};
 
 export default NoteEditor;

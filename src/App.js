@@ -6,7 +6,14 @@ import NoteEditor from "./components/notes/note_editor";
 import NotesList from "./components/notes/notes_list";
 
 function App() {
-	const [notes, setNotes] = useState([
+  const blankNote = {
+		id: uuid(),
+		title: "",
+		body: "",
+		createdDate: "",
+		lastModified: "",
+	};
+	const n = [
 		{
 			id: uuid(),
 			title: "Buy Groceries",
@@ -28,18 +35,34 @@ function App() {
 			createdDate: "1654786692367",
 			lastModified: "1654786692599",
 		},
-	]);
-	const [activeNoteId, setActiveNoteId] = useState(null);
+	];
+	const [notes, setNotes] = useState([]);
+	const [activeNote, setActiveNote] = useState(
+		!notes.length ? blankNote : notes[0]
+	);
+
+	const activateNote = (note) => {
+		setActiveNote(note);
+		setTimeout(() => {
+			console.log(activeNote);
+		}, 1000);
+	};
+
+	const handleActiveNoteChange = (e) => {
+		setActiveNote((prevNote) => {
+			return { ...prevNote, [e.target.name]: e.target.value };
+		});
+	};
 
 	const addNote = (note) => {
-		if (note.title || note.body) {
+		if (note.title.trim() || note.body.trim()) {
 			// the spread operator to create copy and unshift to insert an item in the beginning
 			let newNotes = [...notes];
 			newNotes.unshift(note);
 			setNotes(newNotes);
 
 			// Set the newly created note as active note
-			setActiveNoteId(note.id);
+			setActiveNote(note);
 		} else {
 			console.log("Blank note cannot be added!!");
 		}
@@ -55,8 +78,8 @@ function App() {
 	const updateNote = (note) => {
 		if (note) {
 			let newNotes = notes.map((n) => {
-				if (note.id === n.id) {
-					return { ...n, note };
+				if (n.id === note.id) {
+					return { ...n, ...note };
 				}
 				return n;
 			});
@@ -73,13 +96,19 @@ function App() {
 					{/* <NotesMenu /> */}
 					<NotesList
 						notes={notes}
-						activeNoteId={activeNoteId}
+						activateNote={activateNote}
+						activeNote={activeNote}
 						handleDeleteNote={deleteNote}
 						handleUpdatenote={updateNote}
 					/>
 				</div>
 				<div className='notes-main'>
-					<NoteEditor handleAddNote={addNote} activeNoteId={activeNoteId} />
+					<NoteEditor
+						handleActiveNoteChange={handleActiveNoteChange}
+						handleAddNote={addNote}
+						handleUpdateNote={updateNote}
+						activeNote={activeNote}
+					/>
 				</div>
 			</div>
 		</div>

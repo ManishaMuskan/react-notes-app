@@ -1,14 +1,15 @@
 import NotePreview from "./note_preview";
 
-const NotesList = ({ notes, activeNoteId, handleDeleteNote }) => {
+const NotesList = ({ notes, activeNote, activateNote, handleDeleteNote }) => {
 	if (notes.length) {
 		const notesList = notes.map((note) => {
 			return (
 				<NotePreview
 					note={note}
 					key={note.id}
-					classActive={activeNoteId === note.id ? `active` : ``}
+					activeNote={activeNote}
 					handleDeleteNote={handleDeleteNote}
+					activateNote={activateNote}
 				/>
 			);
 		});

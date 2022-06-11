@@ -1,3 +1,5 @@
+import AppConstants from "../constants/app_constants";
+
 // getting fn to add note to notesList from parent component as props
 const NoteEditor = ({
 	handleActiveNoteChange,
@@ -7,6 +9,10 @@ const NoteEditor = ({
 }) => {
 	const handleNoteChange = (e) => {
 		handleActiveNoteChange(e);
+	};
+
+	const calculateCharLimit = (noteBody) => {
+		return AppConstants.NOTE_BODY_CHARACTER_LIMIT - noteBody.length;
 	};
 
 	// passing note from child to parent and adding it using callback fn i.e. coming as prop
@@ -32,12 +38,15 @@ const NoteEditor = ({
 					value={activeNote.title}
 				/>
 				<textarea
+					maxLength={AppConstants.NOTE_BODY_CHARACTER_LIMIT}
 					name='body'
 					placeholder='add your notes here'
 					onChange={handleNoteChange}
 					value={activeNote.body}
 				/>
-				<span className='character-limit'>1000 words remaining</span>
+				<span className='character-limit'>
+					{calculateCharLimit(activeNote.body)} letters remaining
+				</span>
 			</div>
 			<button className='add-note' onClick={addOrUpdateNote}>
 				{!activeNote.createdDate ? "Add Note" : "Update Note"}

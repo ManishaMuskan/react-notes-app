@@ -12,7 +12,8 @@ const NoteEditor = ({
 	};
 
 	const calculateCharLimit = (noteBody) => {
-		return AppConstants.NOTE_BODY_CHARACTER_LIMIT - noteBody.length;
+		const charLength = AppConstants.NOTE_BODY_CHARACTER_LIMIT - noteBody.length;
+		return charLength > 0 ? charLength : 0;
 	};
 
 	// passing note from child to parent and adding it using callback fn i.e. coming as prop
@@ -42,7 +43,10 @@ const NoteEditor = ({
 					name='body'
 					placeholder='add your notes here'
 					onChange={handleNoteChange}
-					value={activeNote.body}
+					value={activeNote.body.slice(
+						0,
+						AppConstants.NOTE_BODY_CHARACTER_LIMIT
+					)}
 				/>
 				<span className='character-limit'>
 					{calculateCharLimit(activeNote.body)} letters remaining

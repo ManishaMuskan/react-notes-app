@@ -1,7 +1,26 @@
 import React from "react";
 import { FaTrash } from "react-icons/fa";
+import Moment from "react-moment";
 
 const NotePreview = ({ note, activeNote, handleDeleteNote, activateNote }) => {
+	const renderMoment = (note) => {
+		if (!note.lastModified) {
+			return (
+				<>
+					<span>added </span>
+					<Moment fromNow>{note.createdDate}</Moment>
+				</>
+			);
+		} else {
+			return (
+				<>
+					<span>edited </span>
+					<Moment fromNow>{note.lastModified}</Moment>
+				</>
+			);
+		}
+	};
+
 	return (
 		// if previewmode="detail-preview", show detail-preview
 		<div
@@ -23,7 +42,7 @@ const NotePreview = ({ note, activeNote, handleDeleteNote, activateNote }) => {
 				<h5>{note.title}</h5>
 				<p>{note.body}</p>
 			</div>
-			<span className='notes-footer'>edited 5 secs ago</span>
+			<span className='notes-footer'>{renderMoment(note)}</span>
 		</div>
 
 		// else show list-preview with an icon and title

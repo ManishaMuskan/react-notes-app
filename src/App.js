@@ -18,40 +18,40 @@ function App() {
 			id: uuid(),
 			title: "Buy Groceries",
 			body: "Milk, Bread, Apple, Olive oil, Fish, Yogurt",
-			createdDate: "1654786692399",
-			lastModified: "1654786692499",
+			createdDate: 1654901504510,
+			lastModified: 1654901504510,
 		},
 		{
 			id: uuid(),
 			title: "Clean Home",
 			body: "Monday - Fridge, Tuesday - Basins/Sinks, Wednesday - Bedsheets",
-			createdDate: "1654786692390",
-			lastModified: "1654786692699",
+			createdDate: 1654901528228,
+			lastModified: 1654901528228,
 		},
 		{
 			id: uuid(),
 			title: "Read books",
 			body: "1. You matter, 2. Rich Dad and Poor Dad",
-			createdDate: "1654786692367",
-			lastModified: "1654786692599",
+			createdDate: 1654901551005,
+			lastModified: 1654901551005,
 		},
 	];
-	const [notes, setNotes] = useState([]);
+	const [notes, setNotes] = useState(n);
 	const [activeNote, setActiveNote] = useState(
 		!notes.length ? blankNote : notes[0]
 	);
+
+	const handleActiveNoteChange = (e) => {
+		setActiveNote((prevNote) => {
+			return { ...prevNote, [e.target.name]: e.target.value };
+		});
+	};
 
 	const activateNote = (note) => {
 		setActiveNote(note);
 		setTimeout(() => {
 			console.log(activeNote);
 		}, 1000);
-	};
-
-	const handleActiveNoteChange = (e) => {
-		setActiveNote((prevNote) => {
-			return { ...prevNote, [e.target.name]: e.target.value };
-		});
 	};
 
 	const addNote = (note) => {
@@ -70,8 +70,15 @@ function App() {
 
 	const deleteNote = (noteId) => {
 		if (noteId) {
-			let newNotes = [...notes].filter((note) => noteId !== note.id);
+			let newNotes = notes.filter((note) => noteId !== note.id);
 			setNotes(newNotes);
+
+			// todo: Look at how to do change state of activeNote with notes array
+			if (!newNotes.length) {
+				setActiveNote(blankNote);
+			} else {
+				setActiveNote(newNotes[0]);
+			}
 		}
 	};
 
@@ -94,6 +101,20 @@ function App() {
 			<div className='notes-container'>
 				<div className='notes-sidebar'>
 					{/* <NotesMenu /> */}
+					{notes.length ? (
+						<>
+							<button
+								className='add-note'
+								onClick={() => {
+									setActiveNote(blankNote);
+								}}
+							>
+								New Note
+							</button>
+							<br />
+							<br />
+						</>
+					) : null}
 					<NotesList
 						notes={notes}
 						activateNote={activateNote}

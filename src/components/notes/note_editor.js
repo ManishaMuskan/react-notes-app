@@ -1,4 +1,4 @@
-import AppConstants from "../constants/app_constants";
+import AppConstants from "../../constants/app_constants";
 
 // getting fn to add note to notesList from parent component as props
 const NoteEditor = ({
@@ -6,6 +6,7 @@ const NoteEditor = ({
 	handleAddNote,
 	handleUpdateNote,
 	activeNote,
+	showAlert,
 }) => {
 	const handleNoteChange = (e) => {
 		handleActiveNoteChange(e);
@@ -19,12 +20,27 @@ const NoteEditor = ({
 	// passing note from child to parent and adding it using callback fn i.e. coming as prop
 	const addOrUpdateNote = () => {
 		let noteToBeAdded;
-		if (!activeNote.createdDate) {
-			noteToBeAdded = { ...activeNote, createdDate: Date.now() };
-			handleAddNote(noteToBeAdded);
+		if (activeNote.title.trim() || activeNote.body.trim()) {
+			if (!activeNote.createdDate) {
+				noteToBeAdded = { ...activeNote, createdDate: Date.now() };
+				handleAddNote(noteToBeAdded);
+				showAlert({
+					alertType: "success",
+					message: "Note has been successfully added!",
+				});
+			} else {
+				noteToBeAdded = { ...activeNote, lastModified: Date.now() };
+				handleUpdateNote(noteToBeAdded);
+				showAlert({
+					alertType: "success",
+					message: "Note has been successfully updated!",
+				});
+			}
 		} else {
-			noteToBeAdded = { ...activeNote, lastModified: Date.now() };
-			handleUpdateNote(noteToBeAdded);
+			showAlert({
+				alertType: "error",
+				message: "Blank note cannot be added!!",
+			});
 		}
 	};
 

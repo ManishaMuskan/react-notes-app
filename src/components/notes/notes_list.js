@@ -1,6 +1,12 @@
 import NotePreview from "./note_preview";
 
-const NotesList = ({ notes, activeNote, activateNote, handleDeleteNote }) => {
+const NotesList = ({
+	notes,
+	activeNote,
+	activateNote,
+	handleDeleteNote,
+	showAlert,
+}) => {
 	if (notes.length) {
 		const notesList = notes.map((note) => {
 			return (
@@ -10,6 +16,7 @@ const NotesList = ({ notes, activeNote, activateNote, handleDeleteNote }) => {
 					activeNote={activeNote}
 					handleDeleteNote={handleDeleteNote}
 					activateNote={activateNote}
+					showAlert={showAlert}
 				/>
 			);
 		});

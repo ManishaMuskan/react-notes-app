@@ -2,7 +2,13 @@ import React from "react";
 import { FaTrash } from "react-icons/fa";
 import Moment from "react-moment";
 
-const NotePreview = ({ note, activeNote, handleDeleteNote, activateNote }) => {
+const NotePreview = ({
+	note,
+	activeNote,
+	handleDeleteNote,
+	activateNote,
+	showAlert,
+}) => {
 	const renderMoment = (note) => {
 		if (!note.lastModified) {
 			return (
@@ -35,6 +41,10 @@ const NotePreview = ({ note, activeNote, handleDeleteNote, activateNote }) => {
 					onClick={(e) => {
 						e.stopPropagation();
 						handleDeleteNote(note.id);
+						showAlert({
+							alertType: "success",
+							message: "Note has been successfully deleted!",
+						});
 					}}
 				/>
 			</div>

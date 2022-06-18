@@ -2,41 +2,22 @@ import { v4 as uuid } from "uuid";
 import { useState } from "react";
 
 import "./App.css";
+import NOTES from "./seeds/notes";
 import NoteEditor from "./components/notes/note_editor";
 import NotesList from "./components/notes/notes_list";
+import Alert from "./components/common_utils/alert/alert";
+import AppConstants from "./constants/app_constants";
 
 function App() {
-  const blankNote = {
+	// Note CRUD
+	const blankNote = {
 		id: uuid(),
 		title: "",
 		body: "",
 		createdDate: "",
 		lastModified: "",
 	};
-	const n = [
-		{
-			id: uuid(),
-			title: "Buy Groceries",
-			body: "Milk, Bread, Apple, Olive oil, Fish, Yogurt",
-			createdDate: 1654901504510,
-			lastModified: 1654901504510,
-		},
-		{
-			id: uuid(),
-			title: "Clean Home",
-			body: "Monday - Fridge, Tuesday - Basins/Sinks, Wednesday - Bedsheets",
-			createdDate: 1654901528228,
-			lastModified: 1654901528228,
-		},
-		{
-			id: uuid(),
-			title: "Read books",
-			body: "1. You matter, 2. Rich Dad and Poor Dad",
-			createdDate: 1654901551005,
-			lastModified: 1654901551005,
-		},
-	];
-	const [notes, setNotes] = useState(n);
+	const [notes, setNotes] = useState(NOTES);
 	const [activeNote, setActiveNote] = useState(
 		!notes.length ? blankNote : notes[0]
 	);
@@ -49,23 +30,16 @@ function App() {
 
 	const activateNote = (note) => {
 		setActiveNote(note);
-		setTimeout(() => {
-			console.log(activeNote);
-		}, 1000);
 	};
 
 	const addNote = (note) => {
-		if (note.title.trim() || note.body.trim()) {
-			// the spread operator to create copy and unshift to insert an item in the beginning
-			let newNotes = [...notes];
-			newNotes.unshift(note);
-			setNotes(newNotes);
+		// the spread operator to create copy and unshift to insert an item in the beginning
+		let newNotes = [...notes];
+		newNotes.unshift(note);
+		setNotes(newNotes);
 
-			// Set the newly created note as active note
-			setActiveNote(note);
-		} else {
-			console.log("Blank note cannot be added!!");
-		}
+		// Set the newly created note as active note
+		setActiveNote(note);
 	};
 
 	const deleteNote = (noteId) => {
@@ -73,7 +47,7 @@ function App() {
 			let newNotes = notes.filter((note) => noteId !== note.id);
 			setNotes(newNotes);
 
-			// todo: Look at how to do change state of activeNote with notes array
+			// todo: Look at how to do change state of activeNote with notes array, setState is asynchronous operation and setting notes[0] before setting the state of notes array
 			if (!newNotes.length) {
 				setActiveNote(blankNote);
 			} else {
@@ -95,9 +69,39 @@ function App() {
 		}
 	};
 
+	// Alert
+	const [alert, setAlert] = useState(null);
+
+	const showAlert = (alertObject) => {
+		const defaultProps = {
+			alertType: "primary",
+			classes: "",
+			style: null,
+			floatingTime: AppConstants.ALERT_FLOATING_TIME,
+			position: "top right",
+			message: "",
+		};
+
+		setAlert({ ...defaultProps, ...alertObject });
+		setTimeout(
+			() => {
+				dismissAlert();
+			},
+			alertObject.floatingTime
+				? alertObject.floatingTime
+				: AppConstants.ALERT_FLOATING_TIME
+		);
+	};
+
+	const dismissAlert = () => {
+		setAlert(null);
+	};
+
 	return (
 		<div className='App'>
 			{/* <p>Space for alert, need to be in fixed position</p> */}
+			<Alert alert={alert} dismissAlert={dismissAlert}></Alert>
+
 			<div className='notes-container'>
 				<div className='notes-sidebar'>
 					{/* <NotesMenu /> */}
@@ -121,6 +125,7 @@ function App() {
 						activeNote={activeNote}
 						handleDeleteNote={deleteNote}
 						handleUpdatenote={updateNote}
+						showAlert={showAlert}
 					/>
 				</div>
 				<div className='notes-main'>
@@ -129,6 +134,7 @@ function App() {
 						handleAddNote={addNote}
 						handleUpdateNote={updateNote}
 						activeNote={activeNote}
+						showAlert={showAlert}
 					/>
 				</div>
 			</div>

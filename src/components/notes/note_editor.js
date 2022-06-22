@@ -20,6 +20,7 @@ const NoteEditor = ({
 	const handleNoteChange = (e) => {
 		let newNote = { ...activeNote, [e.target.name]: e.target.value };
 		activateNote(newNote);
+		addOrUpdateNote(newNote);
 	};
 
 	const calculateCharLimit = (noteBody) => {
@@ -32,6 +33,7 @@ const NoteEditor = ({
 		cloneTags.push(tag);
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
+		addOrUpdateNote(activeNote);
 	};
 
 	const removeTag = (index) => {
@@ -39,25 +41,25 @@ const NoteEditor = ({
 		cloneTags.splice(index, 1);
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
+		addOrUpdateNote(activeNote);
 		if (!cloneTags.length) {
 			childTagInputRef.current && childTagInputRef.current.focus();
 		}
 	};
 
-	useEffect(() => {
-		// passing note from child to parent and adding it using callback fn i.e. coming as prop
+	const addOrUpdateNote = (note) => {
 		let noteToBeAdded;
-		if (activeNote.title.trim() || activeNote.body.trim()) {
-			if (!activeNote.createdDate) {
-				noteToBeAdded = { ...activeNote, createdDate: Date.now() };
+		if (note.title.trim() || note.body.trim()) {
+			if (!note.createdDate) {
+				noteToBeAdded = { ...note, createdDate: Date.now() };
 				handleAddNote(noteToBeAdded);
 			} else {
-				noteToBeAdded = { ...activeNote, lastModified: Date.now() };
+				noteToBeAdded = { ...note, lastModified: Date.now() };
 				handleUpdateNote(noteToBeAdded);
 			}
 		}
-	}, [activeNote, handleAddNote, handleUpdateNote]);
-
+	};
+	
 	return (
 		<div className='note-editor'>
 			<div className='note-editor-body'>

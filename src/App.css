@@ -120,6 +120,10 @@
 	display: flex;
 }
 
+.notes-details-preview .notes-footer .note-tags i {
+	margin-top: .2rem;
+}
+
 .notes-details-preview .notes-footer .note-tags span{
 	margin-left: .3rem;
 }

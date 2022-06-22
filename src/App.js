@@ -14,6 +14,7 @@ function App() {
 		id: uuid(),
 		title: "",
 		body: "",
+		tags: [],
 		createdDate: "",
 		lastModified: "",
 	};
@@ -22,14 +23,19 @@ function App() {
 		!notes.length ? blankNote : notes[0]
 	);
 
-	const handleActiveNoteChange = (e) => {
-		setActiveNote((prevNote) => {
-			return { ...prevNote, [e.target.name]: e.target.value };
-		});
-	};
+	const [focusTagInput, setFocusTagInput] = useState(false);
 
 	const activateNote = (note) => {
 		setActiveNote(note);
+		removeFocusFromTagInput();
+	};
+
+	const removeFocusFromTagInput = () => {
+		setFocusTagInput(false);
+	};
+
+	const setFocusOnTagInput = () => {
+		setFocusTagInput(true);
 	};
 
 	const addNote = (note) => {
@@ -130,11 +136,14 @@ function App() {
 				</div>
 				<div className='notes-main'>
 					<NoteEditor
-						handleActiveNoteChange={handleActiveNoteChange}
+						activateNote={activateNote}
 						handleAddNote={addNote}
 						handleUpdateNote={updateNote}
 						activeNote={activeNote}
 						showAlert={showAlert}
+						focusTagInput={focusTagInput}
+						setFocusOnTagInput={setFocusOnTagInput}
+						removeFocusFromTagInput={removeFocusFromTagInput}
 					/>
 				</div>
 			</div>

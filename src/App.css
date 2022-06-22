@@ -35,7 +35,9 @@
 .note-editor-body {
 	display: flex;
 	flex-direction: column;
-	height: calc(100vh - 10rem);
+	height: calc(100vh - 12rem);
+	position: relative;
+	overflow: auto;
 }
 
 .note-editor-body input {
@@ -48,13 +50,14 @@
 	height: 100%;
 	width: 100%;
 	padding: 1rem;
-	margin-bottom: 1rem;
 }
 
 .note-editor-body .character-limit {
 	font-size: 0.8rem;
-	color: #f0f2fc;
-	margin-bottom: 1rem;
+	position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+	color: #8f929a;
 }
 
 .add-note {
@@ -91,6 +94,9 @@
 .notes-details-preview .notes-content h5 {
 	margin: 0;
 	text-transform: capitalize;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .notes-details-preview .notes-content p {
@@ -100,11 +106,22 @@
 	font-size: 0.8rem;
 }
 
-.notes-details-preview .notes-footer {
+.notes-details-preview .notes-footer .note-timing{
 	font-size: 0.8rem;
-	color: grey;
+	color: #888;
 	text-align: right;
 	display: block;
+	margin-top: 0.5rem;
+}
+
+.notes-details-preview .notes-footer .note-tags {
+	color: #444;
+	font-size: .75rem;
+	display: flex;
+}
+
+.notes-details-preview .notes-footer .note-tags span{
+	margin-left: .3rem;
 }
 
 /* ==================Alert=================== */
@@ -196,22 +213,88 @@
 	background-color: white;
 	border: 1px solid;
 	border-radius: 1.625rem;
-	margin: .6rem auto ;
+	margin: 0.6rem auto;
 }
 
 .search-wrapper .search-input {
 	flex-grow: 1;
-	font-size: .8rem;
-    outline: none;
-    padding: 0.3rem 0 0.3rem 0.6rem;
+	font-size: 0.8rem;
+	outline: none;
+	padding: 0.3rem 0 0.3rem 0.6rem;
 	border: none;
 	border-radius: 1.625rem;
 }
 
 .search-wrapper .clear-search {
-padding: .3rem .6rem;
-font-size: 1.3rem;
-border: none;
-cursor: pointer;
+	padding: 0.3rem 0.6rem;
+	font-size: 1.3rem;
+	border: none;
+	cursor: pointer;
 }
-	
+
+/* ======================= Tags ========================== */
+.add-tag {
+    outline: none;
+    border: none;
+    color: #666;
+    padding: 0.3rem 0.8rem;
+	margin: 1rem 0;
+    border-radius: 0.2rem;
+    background: white;
+	display: block;
+}
+
+.add-tag .tags-icon {
+	color: #888;
+    position: relative;
+    top: 3px;
+    right: 5px;
+}
+
+.tags-label {
+	margin: 1rem 0;
+    color: white;
+}
+
+.tags-wrapper {
+	display: flex;
+    flex-flow: row wrap;
+    padding: 0.4rem;
+    background: white;
+    border-radius: 0.2rem;
+    margin: 1rem auto;
+    max-height: 5rem;
+    overflow: auto;
+}
+
+.tags-wrapper .tag {
+	background: #dedede;
+	padding: 0.2rem 0;
+	border: none;
+	border-radius: 0.8rem;
+	margin: 0.3rem;
+	display: inline-block;
+}
+
+.tags-wrapper .tag:first-child {
+	margin-left: 0;
+}
+
+.tags-wrapper .tag-name {
+	margin: 0 0.4rem;
+	font-size: 0.8rem;
+}
+
+.tags-wrapper .cancel-tag {
+	margin: 0 0.4rem;
+	font-size: 0.9rem;
+	cursor: pointer;
+}
+
+.tags-wrapper input.new-tag {
+	background: transparent;
+    outline: none;
+    border: none;
+	flex-grow: 1;
+}
+

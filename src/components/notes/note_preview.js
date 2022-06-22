@@ -1,5 +1,5 @@
 import React from "react";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaTags } from "react-icons/fa";
 import Moment from "react-moment";
 
 const NotePreview = ({
@@ -27,6 +27,10 @@ const NotePreview = ({
 		}
 	};
 
+	const tags = (tags) => {
+		return tags.join(" | ");
+	};
+
 	return (
 		// if previewmode="detail-preview", show detail-preview
 		<div
@@ -52,7 +56,17 @@ const NotePreview = ({
 				<h5>{note.title}</h5>
 				<p>{note.body}</p>
 			</div>
-			<span className='notes-footer'>{renderMoment(note)}</span>
+			<div className='notes-footer'>
+				{note.tags.length > 0 && (
+					<div className='note-tags'>
+						<i>
+							<FaTags className='tags-icon' />
+						</i>
+						<span>{tags(note.tags)}</span>
+					</div>
+				)}
+				<span className='note-timing'>{renderMoment(note)}</span>
+			</div>
 		</div>
 
 		// else show list-preview with an icon and title

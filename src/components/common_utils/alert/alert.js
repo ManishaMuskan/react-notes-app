@@ -1,7 +1,5 @@
 const Alert = (props) => {
-	console.log(props);
 	const { alert, dismissAlert } = props;
-	// const { alertType, classes, style, floatingTime, position, message } = alert;
 	const setPosition = () => {
 		let newPosition = alert.position.split(" ");
 		return {
@@ -25,11 +23,5 @@ const Alert = (props) => {
 		)
 	);
 };
-
-// type - info, success, error, warning
-// floatingtime? - default time to dismiss itself
-// show the children inside
-// position? - top left, top right, bottom right, bottom left, if not provided - default - bottom right
-// onClose button to dismiss the alert
 
 export default Alert;

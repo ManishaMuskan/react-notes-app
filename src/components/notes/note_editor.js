@@ -1,15 +1,25 @@
+import TagNotes from "../tag_notes/tag_notes";
 import AppConstants from "../../constants/app_constants";
+import { useState, useRef } from "react";
+import { useEffect } from "react";
 
 // getting fn to add note to notesList from parent component as props
 const NoteEditor = ({
-	handleActiveNoteChange,
+	activateNote,
 	handleAddNote,
 	handleUpdateNote,
 	activeNote,
-	showAlert,
+	focusTagInput,
+	setFocusOnTagInput,
+	removeFocusFromTagInput,
 }) => {
+	const childTagInputRef = useRef(null);
+
+	const [, setTags] = useState(); // To update the state so that the component can be rendered when activeNote.tags array changed.
+
 	const handleNoteChange = (e) => {
-		handleActiveNoteChange(e);
+		let newNote = { ...activeNote, [e.target.name]: e.target.value };
+		activateNote(newNote);
 	};
 
 	const calculateCharLimit = (noteBody) => {
@@ -17,32 +27,36 @@ const NoteEditor = ({
 		return charLength > 0 ? charLength : 0;
 	};
 
-	// passing note from child to parent and adding it using callback fn i.e. coming as prop
-	const addOrUpdateNote = () => {
+	const addTag = (tag) => {
+		let cloneTags = [...activeNote.tags];
+		cloneTags.push(tag);
+		activeNote.tags = [...cloneTags];
+		setTags(cloneTags);
+	};
+
+	const removeTag = (index) => {
+		let cloneTags = [...activeNote.tags];
+		cloneTags.splice(index, 1);
+		activeNote.tags = [...cloneTags];
+		setTags(cloneTags);
+		if (!cloneTags.length) {
+			childTagInputRef.current && childTagInputRef.current.focus();
+		}
+	};
+
+	useEffect(() => {
+		// passing note from child to parent and adding it using callback fn i.e. coming as prop
 		let noteToBeAdded;
 		if (activeNote.title.trim() || activeNote.body.trim()) {
 			if (!activeNote.createdDate) {
 				noteToBeAdded = { ...activeNote, createdDate: Date.now() };
 				handleAddNote(noteToBeAdded);
-				showAlert({
-					alertType: "success",
-					message: "Note has been successfully added!",
-				});
 			} else {
 				noteToBeAdded = { ...activeNote, lastModified: Date.now() };
 				handleUpdateNote(noteToBeAdded);
-				showAlert({
-					alertType: "success",
-					message: "Note has been successfully updated!",
-				});
 			}
-		} else {
-			showAlert({
-				alertType: "error",
-				message: "Blank note cannot be added!!",
-			});
 		}
-	};
+	}, [activeNote, handleAddNote, handleUpdateNote]);
 
 	return (
 		<div className='note-editor'>
@@ -68,11 +82,18 @@ const NoteEditor = ({
 					{calculateCharLimit(activeNote.body)} letters remaining
 				</span>
 			</div>
-			<button className='add-note' onClick={addOrUpdateNote}>
-				{!activeNote.createdDate ? "Add Note" : "Update Note"}
-			</button>
+
+			<TagNotes
+				tagsList={activeNote.tags}
+				addTag={addTag}
+				removeTag={removeTag}
+				childTagInputRef={childTagInputRef}
+				focusTagInput={focusTagInput}
+				setFocusOnTagInput={setFocusOnTagInput}
+				removeFocusFromTagInput={removeFocusFromTagInput}
+			/>
 		</div>
 	);
-};
+};;
 
 export default NoteEditor;

@@ -1,7 +1,6 @@
-import TagNotes from "../tag_notes/tag_notes";
+import { useRef, useState } from "react";
 import AppConstants from "../../constants/app_constants";
-import { useState, useRef } from "react";
-import { useEffect } from "react";
+import TagNotes from "../tag_notes/tag_notes";
 
 // getting fn to add note to notesList from parent component as props
 const NoteEditor = ({
@@ -59,7 +58,7 @@ const NoteEditor = ({
 			}
 		}
 	};
-	
+
 	return (
 		<div className='note-editor'>
 			<div className='note-editor-body'>
@@ -84,7 +83,6 @@ const NoteEditor = ({
 					{calculateCharLimit(activeNote.body)} letters remaining
 				</span>
 			</div>
-
 			<TagNotes
 				tagsList={activeNote.tags}
 				addTag={addTag}
@@ -96,6 +94,6 @@ const NoteEditor = ({
 			/>
 		</div>
 	);
-};;
+};
 
 export default NoteEditor;

@@ -8,6 +8,7 @@ const NotesList = ({
 	activateNote,
 	handleDeleteNote,
 	showAlert,
+	previewMode,
 }) => {
 	const [searchText, setSearchText] = useState("");
 	const [filteredNotes, setFilteredNotes] = useState(notes);
@@ -39,32 +40,27 @@ const NotesList = ({
 				handleDeleteNote={handleDeleteNote}
 				activateNote={activateNote}
 				showAlert={showAlert}
+				previewMode={previewMode}
 			/>
 		);
 	};
 
-	if (notes.length) {
-		let notesList;
-		if (!searchText.length) {
-			notesList = notes.map((note) => notePreview(note));
-		} else {
-			notesList = filteredNotes.map((note) => notePreview(note));
-		}
-		return (
-			<>
-				<Search
-					searchText={searchText}
-					handleSearchOnChange={searchNotes}
-					clearSearch={clearSearch}
-				/>
-				<div className='notes-list'>{notesList}</div>
-			</>
-		);
+	let notesList;
+	if (!searchText.length) {
+		notesList = notes.map((note) => notePreview(note));
 	} else {
-		return (
-			<span className='no-notes-message'>No notes added, Add new note</span>
-		);
+		notesList = filteredNotes.map((note) => notePreview(note));
 	}
+	return (
+		<>
+			<Search
+				searchText={searchText}
+				handleSearchOnChange={searchNotes}
+				clearSearch={clearSearch}
+			/>
+			<div className='notes-list'>{notesList}</div>
+		</>
+	);
 };
 
 export default NotesList;

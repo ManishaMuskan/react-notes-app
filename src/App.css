@@ -1,5 +1,6 @@
 * {
 	box-sizing: border-box;
+	outline: none;
 }
 
 .App {
@@ -21,8 +22,8 @@
 }
 
 .App .notes-container .notes-sidebar {
-	width: 30%;
-	overflow: auto;
+	width: 40%;
+	overflow-y: auto;
 }
 
 .App .notes-container .notes-main {
@@ -72,14 +73,23 @@
 }
 
 /* Notes Preview */
-.notes-details-preview {
+.notes-details-preview, .notes-list-preview {
 	padding: 0.5rem;
 	background: beige;
 	margin: 0 auto 0.8rem;
+	min-width: 100%;
 }
 
-.notes-details-preview.active {
+.notes-details-preview.active, .notes-list-preview.active {
 	background: yellowgreen;
+}
+
+.notes-list-preview {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin: 0 auto 0.1rem;
 }
 
 .notes-details-preview .notes-header {
@@ -91,7 +101,7 @@
 	fill: grey;
 }
 
-.notes-details-preview .notes-content h5 {
+.notes-details-preview .notes-content h5, .notes-list-preview h5 {
 	margin: 0;
 	text-transform: capitalize;
 	overflow: hidden;
@@ -302,3 +312,76 @@
 	flex-grow: 1;
 }
 
+/* ====================== SIdebar Notes menu ======================== */
+
+.sidebar-menu {
+	margin: 1rem 0;
+    background: white;
+    display: flex;
+    color: #888;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.4rem;
+}
+
+.sidebar-menu .menu-option {
+	display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+	align-items: center;
+	position: relative;
+}
+
+.sidebar-menu .menu-option label {
+	font-size: .7rem;
+}
+
+.sidebar-menu .menu-option .menu-option-wrapper{
+	padding: 0px 0.5rem;
+}
+
+.sidebar-menu .menu-option .menu-option-wrapper:hover ul {
+	display: block;
+}
+
+.sidebar-menu .menu-option .menu-option-wrapper ul {
+	list-style: none;
+    font-size: .7rem;
+    position: absolute;
+    background: #9a9a9a;
+    color: #fff;
+    min-width: 5rem;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+    top: 1rem;
+    left: 2rem;
+	display: none;
+}
+
+.sidebar-menu .menu-option .menu-option-wrapper ul li {
+	padding: 0.3rem;
+}
+
+.sidebar-menu .menu-option .menu-option-wrapper ul li:hover, .sidebar-menu .menu-option .menu-option-wrapper ul li.active {
+	background: #888;
+}
+
+.sidebar-menu .toggle-view {
+	background: white;
+    display: flex;
+    justify-content: space-between;
+	align-items: center;
+    gap: 0.5rem;
+    width: max-content;
+}
+
+.sidebar-menu .menu-option svg {
+	width: 1.4rem;
+    height: 1.4rem;
+    padding: 0.2rem;
+}
+
+.sidebar-menu .menu-option .toggle-view svg.active {
+	border: 1px solid;
+} 

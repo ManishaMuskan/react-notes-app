@@ -1,12 +1,12 @@
-import { v4 as uuid } from "uuid";
 import { useState } from "react";
-
+import { v4 as uuid } from "uuid";
 import "./App.css";
-import NOTES from "./seeds/notes";
-import NoteEditor from "./components/notes/note_editor";
-import NotesList from "./components/notes/notes_list";
 import Alert from "./components/common_utils/alert/alert";
+import NotesList from "./components/notes/notes_list";
+import NotesMenu from "./components/notes/notes_menu";
+import NoteEditor from "./components/notes/note_editor";
 import AppConstants from "./constants/app_constants";
+import NOTES from "./seeds/notes";
 
 function App() {
 	// Note CRUD
@@ -23,8 +23,81 @@ function App() {
 		!notes.length ? blankNote : notes[0]
 	);
 
-	const [focusTagInput, setFocusTagInput] = useState(false);
+	const [alert, setAlert] = useState(null);
 
+	const [focusTagInput, setFocusTagInput] = useState(false);
+	const [previewMode, setPreviewMode] = useState(
+		AppConstants.NOTE_PREVIEW_MODE_GRID
+	);
+
+	// Note menu option
+	const [sortingOptions, setSortingOptions] = useState([
+		{
+			text: "Note title",
+			key: "title",
+			sortingOrder: AppConstants.NOTE_SORTING_ORDER_ASC,
+		},
+		{
+			text: "Note content",
+			key: "body",
+			sortingOrder: AppConstants.NOTE_SORTING_ORDER_ASC,
+		},
+		{
+			text: "Date Added",
+			key: "createdDate",
+			sortingOrder: AppConstants.NOTE_SORTING_ORDER_ASC,
+		},
+		{
+			text: "Date Modified",
+			key: "lastModified",
+			sortingOrder: AppConstants.NOTE_SORTING_ORDER_ASC,
+		},
+	]);
+
+	const setNotePreviewMode = (mode) => {
+		setPreviewMode(mode);
+	};
+
+	const sortNotes = (sortingOption, sortingOrder) => {
+		let cloneNotes = [...notes];
+		cloneNotes.sort(function (a, b) {
+			let x, y;
+			if (typeof a[sortingOption] === "string") {
+				x = a[sortingOption].toLowerCase();
+				y = b[sortingOption].toLowerCase();
+			} else {
+				x = a[sortingOption];
+				y = b[sortingOption];
+			}
+			if (sortingOrder === AppConstants.NOTE_SORTING_ORDER_ASC) {
+				return x < y ? -1 : x > y ? 1 : 0;
+			} else {
+				return x < y ? 1 : x > y ? -1 : 0;
+			}
+		});
+
+		// Toggle the order for the selected option and set 'asc' sorting order for all other options
+		let newsortingOptions = sortingOptions.map((opt) => {
+			if (opt.key === sortingOption) {
+				return {
+					...opt,
+					sortingOrder:
+						opt.sortingOrder === AppConstants.NOTE_SORTING_ORDER_ASC
+							? AppConstants.NOTE_SORTING_ORDER_DSC
+							: AppConstants.NOTE_SORTING_ORDER_ASC,
+				};
+			} else {
+				return {
+					...opt,
+					sortingOrder: AppConstants.NOTE_SORTING_ORDER_ASC,
+				};
+			}
+		});
+		setSortingOptions([...newsortingOptions]);
+		setNotes([...cloneNotes]);
+	};
+
+	// Note Preview and Editing
 	const activateNote = (note) => {
 		setActiveNote(note);
 		removeFocusFromTagInput();
@@ -76,8 +149,6 @@ function App() {
 	};
 
 	// Alert
-	const [alert, setAlert] = useState(null);
-
 	const showAlert = (alertObject) => {
 		const defaultProps = {
 			alertType: "primary",
@@ -105,12 +176,10 @@ function App() {
 
 	return (
 		<div className='App'>
-			{/* <p>Space for alert, need to be in fixed position</p> */}
 			<Alert alert={alert} dismissAlert={dismissAlert}></Alert>
 
 			<div className='notes-container'>
 				<div className='notes-sidebar'>
-					{/* <NotesMenu /> */}
 					{notes.length ? (
 						<>
 							<button
@@ -121,18 +190,27 @@ function App() {
 							>
 								New Note
 							</button>
-							<br />
-							<br />
+							<NotesMenu
+								previewMode={previewMode}
+								setNotePreviewMode={setNotePreviewMode}
+								sortingOptions={sortingOptions}
+								sortNotes={sortNotes}
+							/>
+							<NotesList
+								notes={notes}
+								activateNote={activateNote}
+								activeNote={activeNote}
+								handleDeleteNote={deleteNote}
+								handleUpdatenote={updateNote}
+								showAlert={showAlert}
+								previewMode={previewMode}
+							/>
 						</>
-					) : null}
-					<NotesList
-						notes={notes}
-						activateNote={activateNote}
-						activeNote={activeNote}
-						handleDeleteNote={deleteNote}
-						handleUpdatenote={updateNote}
-						showAlert={showAlert}
-					/>
+					) : (
+						<span className='no-notes-message'>
+							No notes added, Add new note
+						</span>
+					)}
 				</div>
 				<div className='notes-main'>
 					<NoteEditor

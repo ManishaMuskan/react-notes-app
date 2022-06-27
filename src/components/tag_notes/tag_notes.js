@@ -10,7 +10,9 @@ const TagNotes = ({
 	setFocusOnTagInput,
 }) => {
 	useEffect(() => {
-		focusTagInput && tagInputRef.current.focus();
+		if (focusTagInput) {
+			tagInputRef.current.focus();
+		}
 	}, [focusTagInput, tagInputRef]);
 
 	const focusAddTagInput = () => {

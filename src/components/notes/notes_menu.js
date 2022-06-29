@@ -1,11 +1,8 @@
 import { useState } from "react";
-import {
-	FaLayerGroup,
-	FaList,
-	FaSortAmountUpAlt,
-	FaThLarge,
-} from "react-icons/fa";
+import { BiSort } from "react-icons/bi";
+import { FaList, FaThLarge } from "react-icons/fa";
 import AppConstants from "../../constants/app_constants";
+
 const NotesMenu = ({
 	previewMode,
 	setNotePreviewMode,
@@ -14,7 +11,7 @@ const NotesMenu = ({
 }) => {
 	const [activeOption, setActiveOption] = useState(sortingOptions[2].key);
 	return (
-		<div className='sidebar-menu'>
+		<div className='notes-list-menu'>
 			<div className='menu-option'>
 				<label>View type</label>
 				<div className='toggle-view'>
@@ -45,7 +42,7 @@ const NotesMenu = ({
 			<div className='menu-option'>
 				<label>Sort by</label>
 				<div className='menu-option-wrapper'>
-					<FaSortAmountUpAlt title='sort by' />
+					<BiSort title='sort by' />
 					<ul>
 						{sortingOptions.map((opt, index) => {
 							return (
@@ -62,16 +59,6 @@ const NotesMenu = ({
 								</li>
 							);
 						})}
-					</ul>
-				</div>
-			</div>
-			<div className='menu-option'>
-				<label>Group by</label>
-				<div className='menu-option-wrapper'>
-					<FaLayerGroup title='group by' />
-					<ul>
-						<li>Alphabets</li>
-						<li>Tags</li>
 					</ul>
 				</div>
 			</div>

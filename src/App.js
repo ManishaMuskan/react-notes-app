@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import "./App.css";
+import Accordion from "./components/common_utils/accordion/accordion";
 import Alert from "./components/common_utils/alert/alert";
 import NotesList from "./components/notes/notes_list";
 import NotesMenu from "./components/notes/notes_menu";
@@ -19,6 +20,7 @@ function App() {
 		lastModified: "",
 	};
 	const [notes, setNotes] = useState(NOTES);
+	const [thrashedNotes, setThrashedNotes] = useState([]);
 	const [activeNote, setActiveNote] = useState(
 		!notes.length ? blankNote : notes[0]
 	);
@@ -53,6 +55,8 @@ function App() {
 			sortingOrder: AppConstants.NOTE_SORTING_ORDER_ASC,
 		},
 	]);
+
+	const [groupNotes, setGroupNotes] = useState(true);
 
 	const setNotePreviewMode = (mode) => {
 		setPreviewMode(mode);
@@ -123,8 +127,16 @@ function App() {
 
 	const deleteNote = (noteId) => {
 		if (noteId) {
-			let newNotes = notes.filter((note) => noteId !== note.id);
+			let newNotes = notes.filter((note) => {
+				if (noteId === note.id) {
+					thrashedNotes.push(note);
+					return false;
+				} else {
+					return true;
+				}
+			});
 			setNotes(newNotes);
+			setThrashedNotes([...thrashedNotes]);
 
 			// todo: Look at how to do change state of activeNote with notes array, setState is asynchronous operation and setting notes[0] before setting the state of notes array
 			if (!newNotes.length) {
@@ -180,37 +192,59 @@ function App() {
 
 			<div className='notes-container'>
 				<div className='notes-sidebar'>
-					{notes.length ? (
-						<>
-							<button
-								className='add-note'
-								onClick={() => {
-									setActiveNote(blankNote);
-								}}
-							>
-								New Note
-							</button>
-							<NotesMenu
-								previewMode={previewMode}
-								setNotePreviewMode={setNotePreviewMode}
-								sortingOptions={sortingOptions}
-								sortNotes={sortNotes}
-							/>
-							<NotesList
-								notes={notes}
-								activateNote={activateNote}
-								activeNote={activeNote}
-								handleDeleteNote={deleteNote}
-								handleUpdatenote={updateNote}
-								showAlert={showAlert}
-								previewMode={previewMode}
-							/>
-						</>
-					) : (
-						<span className='no-notes-message'>
-							No notes added, Add new note
-						</span>
-					)}
+					<button
+						className='new-note'
+						onClick={() => {
+							setActiveNote(blankNote);
+						}}
+					>
+						New Note
+					</button>
+					<Accordion
+						data={[
+							{
+								title: "Notes",
+								body: notes.length ? (
+									<>
+										<NotesMenu
+											previewMode={previewMode}
+											setNotePreviewMode={setNotePreviewMode}
+											sortingOptions={sortingOptions}
+											sortNotes={sortNotes}
+											groupNotes={groupNotes}
+											setGroupNotes={setGroupNotes}
+										/>
+										<NotesList
+											notes={notes}
+											activateNote={activateNote}
+											activeNote={activeNote}
+											handleDeleteNote={deleteNote}
+											handleUpdatenote={updateNote}
+											showAlert={showAlert}
+											previewMode={previewMode}
+											groupNotes={groupNotes}
+										/>
+									</>
+								) : (
+									<span className='no-notes-message'>
+										No notes added, Add new note
+									</span>
+								),
+							},
+							{
+								title: "Trashed Notes",
+								body: thrashedNotes.length ? (
+									thrashedNotes.map((tn, i) => (
+										<div className='notes-list-preview' key={i}>
+											<p className='notes-content'>{tn.title}</p>
+										</div>
+									))
+								) : (
+									<span className='no-notes-message'>Empty trash</span>
+								),
+							},
+						]}
+					></Accordion>
 				</div>
 				<div className='notes-main'>
 					<NoteEditor

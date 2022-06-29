@@ -81,7 +81,7 @@ const NotePreview = ({
 				}`}
 				onClick={() => activateNote(note)}
 			>
-				<h5>{note.title}</h5>
+				<p className='notes-content'>{note.title}</p>
 				<FaTrash
 					className='delete-notes'
 					onClick={(e) => {

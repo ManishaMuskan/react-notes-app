@@ -51,6 +51,7 @@ const NotesList = ({
 	} else {
 		notesList = filteredNotes.map((note) => notePreview(note));
 	}
+
 	return (
 		<>
 			<Search

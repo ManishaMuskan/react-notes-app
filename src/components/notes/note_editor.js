@@ -49,14 +49,14 @@ const NoteEditor = ({
 
 	const addOrUpdateNote = (note) => {
 		let noteToBeAdded;
-		if (note.title.trim() || note.body.trim()) {
-			if (!note.createdDate) {
+		if (!note.createdDate) {
+			if (note.title.trim() || note.body.trim()) {
 				noteToBeAdded = { ...note, createdDate: Date.now() };
 				handleAddNote(noteToBeAdded);
-			} else {
-				noteToBeAdded = { ...note, lastModified: Date.now() };
-				handleUpdateNote(noteToBeAdded);
 			}
+		} else {
+			noteToBeAdded = { ...note, lastModified: Date.now() };
+			handleUpdateNote(noteToBeAdded);
 		}
 	};
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaCaretDown, FaCaretRight } from "react-icons/fa";
+import Classes from "./accordion.module.css";
 
 const Accordion = ({ data }) => {
 	const [expandedAccordionItem, setexpandedAccordionItem] = useState([0]);
@@ -18,12 +19,12 @@ const Accordion = ({ data }) => {
 	};
 
 	return (
-		<div className='accordion'>
+		<div className={Classes.accordion}>
 			{data.map((d, i) => {
 				return (
-					<div className='accordion-item' key={i}>
+					<div className={Classes["accordion-item"]} key={i}>
 						<div
-							className='accordion-item-title'
+							className={Classes["accordion-item-title"]}
 							onClick={() => {
 								expandOrContractAccordionItem(i);
 							}}
@@ -38,7 +39,7 @@ const Accordion = ({ data }) => {
 							<h5>{d.title}</h5>
 						</div>
 						{expandedAccordionItem.includes(i) && (
-							<div className='accordion-item-body'>{d.body}</div>
+							<div className={Classes["accordion-item-body"]}>{d.body}</div>
 						)}
 					</div>
 				);

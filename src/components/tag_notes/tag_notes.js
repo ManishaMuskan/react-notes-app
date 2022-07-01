@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { FaTags } from "react-icons/fa";
+import Classes from "./tags.module.css";
 
 const TagNotes = ({
 	childTagInputRef: tagInputRef, // Reffering to the reference taken from parent component giving alias tagInputRef
@@ -28,10 +29,10 @@ const TagNotes = ({
 
 	let tags = tagsList.map((tag, index) => {
 		return (
-			<div className='tag' key={index}>
-				<span className='tag-name'>{tag}</span>
+			<div className={Classes["tag"]} key={index}>
+				<span className={Classes["tag-name"]}>{tag}</span>
 				<span
-					className='cancel-tag'
+					className={Classes["cancel-tag"]}
 					onClick={() => {
 						removeTag(index);
 					}}
@@ -43,21 +44,21 @@ const TagNotes = ({
 	});
 	if (!focusTagInput && !tagsList.length) {
 		return (
-			<button className='add-tag' onClick={focusAddTagInput}>
-				<FaTags className='tags-icon' />
+			<button className={Classes["add-tag"]} onClick={focusAddTagInput}>
+				<FaTags className={Classes["tags-icon"]} />
 				Add tag and press Enter
 			</button>
 		);
 	} else {
 		return (
 			<>
-				<h5 className='tags-label'>Tags</h5>
-				<div className='tags-wrapper' onClick={focusAddTagInput}>
+				<h5 className={Classes["tags-label"]}>Tags</h5>
+				<div className={Classes["tags-wrapper"]} onClick={focusAddTagInput}>
 					{tags}
 					<input
 						ref={tagInputRef}
 						type='text'
-						className='new-tag'
+						className={Classes["new-tag"]}
 						onKeyDown={_addTag}
 					/>
 				</div>

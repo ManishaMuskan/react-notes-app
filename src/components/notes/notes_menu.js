@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BiSort } from "react-icons/bi";
 import { FaList, FaThLarge } from "react-icons/fa";
 import AppConstants from "../../constants/app_constants";
+import Classes from "./notes.module.css";
 
 const NotesMenu = ({
 	previewMode,
@@ -11,10 +12,10 @@ const NotesMenu = ({
 }) => {
 	const [activeOption, setActiveOption] = useState(sortingOptions[2].key);
 	return (
-		<div className='notes-list-menu'>
-			<div className='menu-option'>
+		<div className={Classes["notes-list-menu"]}>
+			<div className={Classes["menu-option"]}>
 				<label>View type</label>
-				<div className='toggle-view'>
+				<div className={Classes["toggle-view"]}>
 					<FaList
 						title='list view'
 						onClick={() => {
@@ -22,7 +23,7 @@ const NotesMenu = ({
 						}}
 						className={
 							previewMode === AppConstants.NOTE_PREVIEW_MODE_LIST
-								? "active"
+								? Classes.active
 								: ""
 						}
 					/>
@@ -33,15 +34,15 @@ const NotesMenu = ({
 						}}
 						className={
 							previewMode === AppConstants.NOTE_PREVIEW_MODE_GRID
-								? "active"
+								? Classes.active
 								: ""
 						}
 					/>
 				</div>
 			</div>
-			<div className='menu-option'>
+			<div className={Classes["menu-option"]}>
 				<label>Sort by</label>
-				<div className='menu-option-wrapper'>
+				<div className={Classes["menu-option-wrapper"]}>
 					<BiSort title='sort by' />
 					<ul>
 						{sortingOptions.map((opt, index) => {
@@ -49,7 +50,7 @@ const NotesMenu = ({
 								// todo: add sorting arrow icon after the title for the active li
 								<li
 									key={index}
-									className={activeOption === opt.key ? "active" : ""}
+									className={activeOption === opt.key ? Classes.active : ""}
 									onClick={() => {
 										setActiveOption(opt.key);
 										sortNotes(opt.key, opt.sortingOrder);

@@ -1,0 +1,197 @@
+/* ==================Notes=================== */
+/* Notes Editor */
+.note-editor-body {
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 12rem);
+	position: relative;
+	overflow: auto;
+}
+
+.note-editor-body input {
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+}
+
+.note-editor-body textarea {
+	resize: none;
+	height: 100%;
+	width: 100%;
+	padding: 1rem;
+}
+
+.note-editor-body .character-limit {
+	font-size: 0.8rem;
+	position: absolute;
+	bottom: 1rem;
+	left: 1rem;
+	color: #8f929a;
+}
+
+.new-note {
+	padding: 0.3rem;
+	border: 1px solid;
+	border-radius: 3px;
+	color: white;
+	margin-left: auto;
+	margin-right: 0;
+	display: block;
+	background: transparent;
+}
+
+/* Notes List */
+.no-notes-message {
+	color: #9e9fa0;
+	font-size: 0.9rem;
+	padding-left: 0.5rem;
+}
+
+.notes-list {
+	max-height: 20rem;
+	overflow: auto;
+}
+
+/* Notes Preview */
+.notes-details-preview,
+.notes-list-preview {
+	padding: 0.5rem;
+	background: beige;
+	margin: 0 auto 0.8rem;
+	min-width: 100%;
+}
+
+.notes-list-preview {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin: 0 auto 0.1rem;
+}
+
+.notes-details-preview.active,
+.notes-list-preview.active {
+	filter: hue-rotate(45deg);
+}
+
+.notes-details-preview .notes-header {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.notes-details-preview .notes-header .delete-notes,
+.notes-list-preview .delete-notes {
+	color: #888;
+	cursor: pointer;
+}
+
+.notes-details-preview .notes-content h5,
+.notes-list-preview h5 {
+	margin: 0;
+	text-transform: capitalize;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.notes-details-preview .notes-content p,
+.notes-list-preview p.notes-content {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 0.8rem;
+}
+
+.notes-details-preview .notes-footer .note-timing {
+	font-size: 0.8rem;
+	color: #888;
+	text-align: right;
+	display: block;
+	margin-top: 0.5rem;
+}
+
+.notes-details-preview .notes-footer .note-tags {
+	color: #444;
+	font-size: 0.75rem;
+	display: flex;
+}
+
+.notes-details-preview .notes-footer .note-tags i {
+	margin-top: 0.2rem;
+}
+
+.notes-details-preview .notes-footer .note-tags span {
+	margin-left: 0.3rem;
+}
+
+.notes-list-menu {
+	background: white;
+	display: flex;
+	color: #888;
+	align-items: center;
+	justify-content: space-around;
+	padding: 0.4rem;
+}
+
+.notes-list-menu .menu-option {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	align-items: center;
+	position: relative;
+	cursor: pointer;
+}
+
+.notes-list-menu .menu-option label {
+	font-size: 0.7rem;
+}
+
+.notes-list-menu .menu-option .menu-option-wrapper {
+	padding: 0px 0.5rem;
+}
+
+.notes-list-menu .menu-option .menu-option-wrapper:hover ul {
+	display: block;
+}
+
+.notes-list-menu .menu-option .menu-option-wrapper ul {
+	list-style: none;
+	font-size: 0.7rem;
+	position: absolute;
+	background: #9a9a9a;
+	color: #fff;
+	min-width: 5rem;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+	top: 1rem;
+	left: 2rem;
+	display: none;
+}
+
+.notes-list-menu .menu-option .menu-option-wrapper ul li {
+	padding: 0.3rem;
+}
+
+.notes-list-menu .menu-option .menu-option-wrapper ul li:hover,
+.notes-list-menu .menu-option .menu-option-wrapper ul li.active {
+	background: #888;
+}
+
+.notes-list-menu .toggle-view {
+	background: white;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.5rem;
+	width: max-content;
+}
+
+.notes-list-menu .menu-option svg {
+	width: 1.4rem;
+	height: 1.4rem;
+	padding: 0.2rem;
+}
+
+.notes-list-menu .menu-option .toggle-view svg.active {
+	border: 1px solid;
+}

@@ -1,13 +1,14 @@
+import Classes from "./search.module.css";
 const Search = ({ searchText, handleSearchOnChange, clearSearch }) => {
 	return (
-		<div className='search-wrapper'>
+		<div className={Classes["search-wrapper"]}>
 			<input
-				className='search-input'
+				className={Classes["search-input"]}
 				placeholder='Search...'
 				value={searchText}
 				onChange={handleSearchOnChange}
 			/>
-			<span className='clear-search' onClick={clearSearch}>
+			<span className={Classes["clear-search"]} onClick={clearSearch}>
 				&times;
 			</span>
 		</div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Search from "../search/search";
+import Classes from "./notes.module.css";
 import NotePreview from "./note_preview";
 
 const NotesList = ({
@@ -59,7 +60,7 @@ const NotesList = ({
 				handleSearchOnChange={searchNotes}
 				clearSearch={clearSearch}
 			/>
-			<div className='notes-list'>{notesList}</div>
+			<div className={Classes["notes-list"]}>{notesList}</div>
 		</>
 	);
 };

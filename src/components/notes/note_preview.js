@@ -2,6 +2,7 @@ import React from "react";
 import { FaTags, FaTrash } from "react-icons/fa";
 import Moment from "react-moment";
 import AppConstants from "../../constants/app_constants";
+import Classes from "./notes.module.css";
 
 const NotePreview = ({
 	note,
@@ -36,14 +37,14 @@ const NotePreview = ({
 	const gridModePreview = () => {
 		return (
 			<div
-				className={`notes-details-preview ${
-					activeNote.id === note.id ? `active` : ``
+				className={`${Classes["notes-details-preview"]} ${
+					activeNote.id === note.id ? `${Classes.active}` : ``
 				}`}
 				onClick={() => activateNote(note)}
 			>
-				<div className='notes-header'>
+				<div className={Classes["notes-header"]}>
 					<FaTrash
-						className='delete-notes'
+						className={Classes["delete-notes"]}
 						onClick={(e) => {
 							e.stopPropagation();
 							handleDeleteNote(note.id);
@@ -54,20 +55,20 @@ const NotePreview = ({
 						}}
 					/>
 				</div>
-				<div className='notes-content'>
+				<div className={Classes["notes-content"]}>
 					<h5>{note.title}</h5>
 					<p>{note.body}</p>
 				</div>
-				<div className='notes-footer'>
+				<div className={Classes["notes-footer"]}>
 					{note.tags.length > 0 && (
-						<div className='note-tags'>
+						<div className={Classes["note-tags"]}>
 							<i>
-								<FaTags className='tags-icon' />
+								<FaTags className={Classes["tags-icon"]} />
 							</i>
 							<span>{tags(note.tags)}</span>
 						</div>
 					)}
-					<span className='note-timing'>{renderMoment(note)}</span>
+					<span className={Classes["note-timing"]}>{renderMoment(note)}</span>
 				</div>
 			</div>
 		);
@@ -76,14 +77,14 @@ const NotePreview = ({
 	const listModePreview = () => {
 		return (
 			<div
-				className={`notes-list-preview ${
-					activeNote.id === note.id ? `active` : ``
+				className={`${Classes["notes-list-preview"]} ${
+					activeNote.id === note.id ? `${Classes.active}` : ``
 				}`}
 				onClick={() => activateNote(note)}
 			>
-				<p className='notes-content'>{note.title}</p>
+				<p className={Classes["notes-content"]}>{note.title}</p>
 				<FaTrash
-					className='delete-notes'
+					className={Classes["delete-notes"]}
 					onClick={(e) => {
 						e.stopPropagation();
 						handleDeleteNote(note.id);

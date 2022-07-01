@@ -1,3 +1,4 @@
+import Classes from "./alert.module.css";
 const Alert = (props) => {
 	const { alert, dismissAlert } = props;
 	const setPosition = () => {
@@ -12,10 +13,12 @@ const Alert = (props) => {
 	return (
 		props.alert && (
 			<div
-				className={`alert ${alert.alertType} ${alert.classes}`}
+				className={`${Classes.alert} ${Classes[alert.alertType]} ${
+					Classes[alert.classes]
+				}`}
 				style={setPosition()}
 			>
-				<span className='closebtn' onClick={dismissAlert}>
+				<span className={Classes["closebtn"]} onClick={dismissAlert}>
 					&times;
 				</span>
 				{alert.message}

@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import "./App.css";
 import Accordion from "./components/common_utils/accordion/accordion";
 import Alert from "./components/common_utils/alert/alert";
+import Classes from "./components/notes/notes.module.css";
 import NotesList from "./components/notes/notes_list";
 import NotesMenu from "./components/notes/notes_menu";
 import NoteEditor from "./components/notes/note_editor";
@@ -193,7 +194,7 @@ function App() {
 			<div className='notes-container'>
 				<div className='notes-sidebar'>
 					<button
-						className='new-note'
+						className={Classes["new-note"]}
 						onClick={() => {
 							setActiveNote(blankNote);
 						}}
@@ -226,7 +227,7 @@ function App() {
 										/>
 									</>
 								) : (
-									<span className='no-notes-message'>
+									<span className={Classes["no-notes-message"]}>
 										No notes added, Add new note
 									</span>
 								),
@@ -235,12 +236,14 @@ function App() {
 								title: "Trashed Notes",
 								body: thrashedNotes.length ? (
 									thrashedNotes.map((tn, i) => (
-										<div className='notes-list-preview' key={i}>
-											<p className='notes-content'>{tn.title}</p>
+										<div className={Classes["notes-list-preview"]} key={i}>
+											<p className={Classes["notes-content"]}>{tn.title}</p>
 										</div>
 									))
 								) : (
-									<span className='no-notes-message'>Empty trash</span>
+									<span className={Classes["no-notes-message"]}>
+										Empty trash
+									</span>
 								),
 							},
 						]}

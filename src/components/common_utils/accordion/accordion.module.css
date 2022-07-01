@@ -1,0 +1,33 @@
+/* =================Accordion start================ */
+.accordion {
+	margin: 0.5rem auto;
+}
+
+.accordion .accordion-item {
+	margin-bottom: 1rem;
+}
+
+.accordion .accordion-item .accordion-item-title {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	font-weight: bold;
+	color: white;
+	gap: 0.5rem;
+	padding: 0.5rem;
+}
+
+.accordion .accordion-item .accordion-item-title:hover,
+.accordion .accordion-item.active .accordion-item-title {
+	background: #707070;
+}
+
+.accordion .accordion-item .accordion-item-title h5 {
+	font-weight: normal;
+}
+
+.accordion .accordion-item .accordion-item-body {
+	padding-left: 2rem;
+	padding-top: 0.5rem;
+}
+/* =================Accordion End================ */

@@ -1,7 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
-import { GET_ALL_NOTES_URL } from "./constants/apis_endpoint";
 import "./App.css";
 import Accordion from "./components/common_utils/accordion/accordion";
 import Alert from "./components/common_utils/alert/alert";
@@ -10,11 +8,11 @@ import NotesList from "./components/notes/notes_list";
 import NotesMenu from "./components/notes/notes_menu";
 import NoteEditor from "./components/notes/note_editor";
 import AppConstants from "./constants/app_constants";
+import { GetAllNotes, CreateNote, UpdateNote, DeleteNote } from "./services/notes.service";
 
 function App() {
   // Note CRUD
   const blankNote = {
-    id: uuid(),
     title: "",
     body: "",
     tags: [],
@@ -117,18 +115,20 @@ function App() {
     setFocusTagInput(true);
   };
 
-  const addNote = (note) => {
+  const addNote = async (note) => {
+    const newNote = await CreateNote(note);
     // the spread operator to create copy and unshift to insert an item in the beginning
     let newNotes = [...notes];
-    newNotes.unshift(note);
+    newNotes.unshift(newNote);
     setNotes(newNotes);
 
     // Set the newly created note as active note
     setActiveNote(note);
   };
 
-  const deleteNote = (noteId) => {
-    if (noteId) {
+  const deleteNote = async (noteId) => {
+    const ifNoteDeleted = await DeleteNote(noteId);
+    if (ifNoteDeleted) {
       let newNotes = notes.filter((note) => {
         if (noteId === note.id) {
           thrashedNotes.push(note);
@@ -149,11 +149,12 @@ function App() {
     }
   };
 
-  const updateNote = (note) => {
-    if (note) {
+  const updateNote = async (note) => {
+    const updatedNote = await UpdateNote(note);
+    if (updatedNote) {
       let newNotes = notes.map((n) => {
-        if (n.id === note.id) {
-          return { ...n, ...note };
+        if (n.id === updatedNote.id) {
+          return { ...n, ...updatedNote };
         }
         return n;
       });
@@ -183,23 +184,18 @@ function App() {
         : AppConstants.ALERT_FLOATING_TIME
     );
   };
-
-  useEffect(() => {
-    async function fetchNotes() {
-      const response = await axios.get(GET_ALL_NOTES_URL);
-      response.data.notes.map((note) => {
-        note.id = note._id;
-        return note;
-      });
-      setNotes(response.data.notes);
-      console.log("NOTES CALLED");
-    }
-    fetchNotes();
-  }, []);
-
+  
   const dismissAlert = () => {
     setAlert(null);
   };
+
+  useEffect(() => {
+    async function fetchNotes() {
+      const notes = await GetAllNotes();
+      setNotes(notes);
+    }
+    fetchNotes();
+  }, []);
 
   return (
     <div className="App">

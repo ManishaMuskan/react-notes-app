@@ -1,4 +1,4 @@
-/* eslint-disable func-names */
+/* eslint-disable no-param-reassign */
 const mongoose = require('mongoose');
 
 const noteSchema = new mongoose.Schema({
@@ -16,10 +16,19 @@ const noteSchema = new mongoose.Schema({
 	createdDate: {
 		type: Date,
 		required: true,
-		default: Date.now(),
+		default: new Date(),
 	},
 	lastModified: {
 		type: Date,
+		default: new Date(),
+	},
+});
+
+noteSchema.set('toJSON', {
+	transform(document, returnedObject) {
+		returnedObject.id = returnedObject._id;
+		delete returnedObject._id;
+		delete returnedObject.__v;
 	},
 });
 

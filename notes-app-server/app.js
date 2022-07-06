@@ -1,8 +1,5 @@
 const express = require('express');
-const morgan = require('morgan');
 const routes = require('./routes');
-
-morgan.token('log_fromat', ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" - :status - :response-time ms - size :res[content-length]');
 
 const app = express();
 
@@ -22,7 +19,7 @@ const cors = (req, res, next) => {
 	next();
 };
 
-app.use('/v1', cors, routes);
+app.use(cors, routes);
 
 app.use('*', (req, res) => {
 	res.status(500).send('Error');

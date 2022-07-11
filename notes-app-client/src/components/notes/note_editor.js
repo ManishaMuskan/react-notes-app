@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import AppConstants from "../../constants/app_constants";
 import TagNotes from "../tag_notes/tag_notes";
 import Classes from "./notes.module.css";
+import { debounce } from "../../helpers/helpers";
 
 // getting fn to add note to notesList from parent component as props
 const NoteEditor = ({
@@ -20,7 +21,8 @@ const NoteEditor = ({
 	const handleNoteChange = (e) => {
 		let newNote = { ...activeNote, [e.target.name]: e.target.value };
 		activateNote(newNote);
-		addOrUpdateNote(newNote);
+		//addOrUpdateNote(newNote);
+		optimizedAddOrUpdateNote(newNote);
 	};
 
 	const calculateCharLimit = (noteBody) => {
@@ -33,7 +35,7 @@ const NoteEditor = ({
 		cloneTags.push(tag);
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
-		addOrUpdateNote(activeNote);
+		optimizedAddOrUpdateNote(activeNote);
 	};
 
 	const removeTag = (index) => {
@@ -41,24 +43,26 @@ const NoteEditor = ({
 		cloneTags.splice(index, 1);
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
-		addOrUpdateNote(activeNote);
+		optimizedAddOrUpdateNote(activeNote);
 		if (!cloneTags.length) {
 			childTagInputRef.current && childTagInputRef.current.focus();
 		}
 	};
 
 	const addOrUpdateNote = (note) => {
-		let noteToBeAdded;
 		if (!note.createdDate) {
 			if (note.title.trim() || note.body.trim()) {
-				noteToBeAdded = { ...note, createdDate: Date.now() };
-				handleAddNote(noteToBeAdded);
+				handleAddNote(note);
 			}
 		} else {
-			noteToBeAdded = { ...note, lastModified: Date.now() };
-			handleUpdateNote(noteToBeAdded);
+			handleUpdateNote(note);
 		}
 	};
+
+	const optimizedAddOrUpdateNote = useCallback(debounce(() => addOrUpdateNote(activeNote)), []);
+// 	  const debouncedChangeHandler = useMemo(
+//     () => debounce(addOrUpdateNote, 300)
+//   , []);
 
 	return (
 		<div className={Classes["note-editor"]}>

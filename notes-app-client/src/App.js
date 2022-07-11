@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
 import "./App.css";
 import Accordion from "./components/common_utils/accordion/accordion";
 import Alert from "./components/common_utils/alert/alert";
@@ -8,7 +7,7 @@ import NotesList from "./components/notes/notes_list";
 import NotesMenu from "./components/notes/notes_menu";
 import NoteEditor from "./components/notes/note_editor";
 import AppConstants from "./constants/app_constants";
-import { GetAllNotes, CreateNote, UpdateNote, DeleteNote } from "./services/notes.service";
+import { CreateNote, DeleteNote, GetAllNotes, UpdateNote } from "./services/notes.service";
 
 function App() {
   // Note CRUD
@@ -16,8 +15,7 @@ function App() {
     title: "",
     body: "",
     tags: [],
-    createdDate: "",
-    lastModified: "",
+    trashed: false
   };
   const [notes, setNotes] = useState([]);
   const [thrashedNotes, setThrashedNotes] = useState([]);
@@ -55,8 +53,6 @@ function App() {
       sortingOrder: AppConstants.NOTE_SORTING_ORDER_ASC,
     },
   ]);
-
-  const [groupNotes, setGroupNotes] = useState(true);
 
   const setNotePreviewMode = (mode) => {
     setPreviewMode(mode);
@@ -118,12 +114,13 @@ function App() {
   const addNote = async (note) => {
     const newNote = await CreateNote(note);
     // the spread operator to create copy and unshift to insert an item in the beginning
+    console.log(notes);
     let newNotes = [...notes];
     newNotes.unshift(newNote);
     setNotes(newNotes);
 
     // Set the newly created note as active note
-    setActiveNote(note);
+    setActiveNote(newNote);
   };
 
   const deleteNote = async (noteId) => {
@@ -192,6 +189,7 @@ function App() {
   useEffect(() => {
     async function fetchNotes() {
       const notes = await GetAllNotes();
+      
       setNotes(notes);
     }
     fetchNotes();
@@ -222,8 +220,6 @@ function App() {
                       setNotePreviewMode={setNotePreviewMode}
                       sortingOptions={sortingOptions}
                       sortNotes={sortNotes}
-                      groupNotes={groupNotes}
-                      setGroupNotes={setGroupNotes}
                     />
                     <NotesList
                       notes={notes}
@@ -233,7 +229,6 @@ function App() {
                       handleUpdatenote={updateNote}
                       showAlert={showAlert}
                       previewMode={previewMode}
-                      groupNotes={groupNotes}
                     />
                   </>
                 ) : (

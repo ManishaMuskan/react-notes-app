@@ -7,7 +7,11 @@ const options = {
 	useUnifiedTopology: true,
 	useFindAndModify: false,
 };
-mongoose.connect(mongoDbURI, options);
+mongoose.connect(mongoDbURI, options).then(() => {
+	console.log('Connected to Database');
+}).catch((err) => {
+	console.log('Not Connected to Database ERROR! ', err);
+});
 
 mongoose.connection.on('connected', () => {
 	console.log('Mongoose default connection');

@@ -48,10 +48,6 @@ const NotePreview = ({
 						onClick={(e) => {
 							e.stopPropagation();
 							handleDeleteNote(note.id);
-							showAlert({
-								alertType: "success",
-								message: "Note has been successfully deleted!",
-							});
 						}}
 					/>
 				</div>
@@ -88,10 +84,6 @@ const NotePreview = ({
 					onClick={(e) => {
 						e.stopPropagation();
 						handleDeleteNote(note.id);
-						showAlert({
-							alertType: "success",
-							message: "Note has been successfully deleted!",
-						});
 					}}
 				/>
 			</div>

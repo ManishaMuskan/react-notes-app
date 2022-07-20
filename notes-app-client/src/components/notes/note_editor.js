@@ -21,6 +21,7 @@ const NoteEditor = ({
 		let newNote = { ...activeNote, [e.target.name]: e.target.value };
 		activateNote(newNote);
 		addOrUpdateNote(newNote);
+		//optimizedAddOrUpdateNote(newNote);
 	};
 
 	const calculateCharLimit = (noteBody) => {
@@ -34,6 +35,7 @@ const NoteEditor = ({
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
 		addOrUpdateNote(activeNote);
+		//optimizedAddOrUpdateNote(activeNote);
 	};
 
 	const removeTag = (index) => {
@@ -42,23 +44,23 @@ const NoteEditor = ({
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
 		addOrUpdateNote(activeNote);
+		//optimizedAddOrUpdateNote(activeNote);
 		if (!cloneTags.length) {
 			childTagInputRef.current && childTagInputRef.current.focus();
 		}
 	};
 
 	const addOrUpdateNote = (note) => {
-		let noteToBeAdded;
 		if (!note.createdDate) {
 			if (note.title.trim() || note.body.trim()) {
-				noteToBeAdded = { ...note, createdDate: Date.now() };
-				handleAddNote(noteToBeAdded);
+				handleAddNote(note);
 			}
 		} else {
-			noteToBeAdded = { ...note, lastModified: Date.now() };
-			handleUpdateNote(noteToBeAdded);
+			handleUpdateNote(note);
 		}
 	};
+
+//	const optimizedAddOrUpdateNote = useCallback(debounce(addOrUpdateNote), []);
 
 	return (
 		<div className={Classes["note-editor"]}>
@@ -80,7 +82,7 @@ const NoteEditor = ({
 						AppConstants.NOTE_BODY_CHARACTER_LIMIT
 					)}
 				/>
-				<span className={["character-limit"]}>
+				<span className={Classes["character-limit"]}>
 					{calculateCharLimit(activeNote.body)} letters remaining
 				</span>
 			</div>

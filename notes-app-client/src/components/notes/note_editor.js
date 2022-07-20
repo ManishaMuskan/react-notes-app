@@ -1,8 +1,7 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import AppConstants from "../../constants/app_constants";
 import TagNotes from "../tag_notes/tag_notes";
 import Classes from "./notes.module.css";
-import { debounce } from "../../helpers/helpers";
 
 // getting fn to add note to notesList from parent component as props
 const NoteEditor = ({
@@ -21,8 +20,8 @@ const NoteEditor = ({
 	const handleNoteChange = (e) => {
 		let newNote = { ...activeNote, [e.target.name]: e.target.value };
 		activateNote(newNote);
-		//addOrUpdateNote(newNote);
-		optimizedAddOrUpdateNote(newNote);
+		addOrUpdateNote(newNote);
+		//optimizedAddOrUpdateNote(newNote);
 	};
 
 	const calculateCharLimit = (noteBody) => {
@@ -35,7 +34,8 @@ const NoteEditor = ({
 		cloneTags.push(tag);
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
-		optimizedAddOrUpdateNote(activeNote);
+		addOrUpdateNote(activeNote);
+		//optimizedAddOrUpdateNote(activeNote);
 	};
 
 	const removeTag = (index) => {
@@ -43,7 +43,8 @@ const NoteEditor = ({
 		cloneTags.splice(index, 1);
 		activeNote.tags = [...cloneTags];
 		setTags(cloneTags);
-		optimizedAddOrUpdateNote(activeNote);
+		addOrUpdateNote(activeNote);
+		//optimizedAddOrUpdateNote(activeNote);
 		if (!cloneTags.length) {
 			childTagInputRef.current && childTagInputRef.current.focus();
 		}
@@ -59,10 +60,7 @@ const NoteEditor = ({
 		}
 	};
 
-	const optimizedAddOrUpdateNote = useCallback(debounce(() => addOrUpdateNote(activeNote)), []);
-// 	  const debouncedChangeHandler = useMemo(
-//     () => debounce(addOrUpdateNote, 300)
-//   , []);
+//	const optimizedAddOrUpdateNote = useCallback(debounce(addOrUpdateNote), []);
 
 	return (
 		<div className={Classes["note-editor"]}>
@@ -84,7 +82,7 @@ const NoteEditor = ({
 						AppConstants.NOTE_BODY_CHARACTER_LIMIT
 					)}
 				/>
-				<span className={["character-limit"]}>
+				<span className={Classes["character-limit"]}>
 					{calculateCharLimit(activeNote.body)} letters remaining
 				</span>
 			</div>
